@@ -1,0 +1,40 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const s1 = JSON.parse('{{ s1 | tojson | safe }}');
+const s2 = JSON.parse('{{ s2 | tojson | safe }}');
+
+const m1 = Number('{{ m1 }}');
+const m2 = Number('{{ m2 }}');
+const mg = Number('{{ mg }}');
+
+// BAR CHART
+new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+        labels: ['S1', 'S2', 'MG'],
+        datasets: [{
+            label: 'Moyennes',
+            data: [m1, m2, mg]
+        }]
+    }
+});
+
+// LINE CHART
+new Chart(document.getElementById('chart2'), {
+    type: 'line',
+    data: {
+        labels: Array.from({length: s1.length}, (_, i) => i + 1),
+        datasets: [
+            {
+                label: 'S1',
+                data: s1
+            },
+            {
+                label: 'S2',
+                data: s2
+            }
+        ]
+    }
+});
+</script>

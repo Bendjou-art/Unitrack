@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="POST">
+<select name="semestre" class="form-control mb-2">
+<option value="1">S1</option>
+<option value="2">S2</option>
+</select>
+
+{% for i in range(1,7) %}
+<input name="matiere{{i}}" class="form-control mb-1" placeholder="matiere">
+<input name="note{{i}}" class="form-control mb-2" type="number">
+{% endfor %}
+
+<button class="btn btn-success">Valider</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Planning</h3>
+
+{% for p in planning %}
+<div class="alert alert-success">
+{{p.task}} : {{p.start}}h - {{p.end}}h
+</div>
+{% endfor %}
+
+{% endblock %}
