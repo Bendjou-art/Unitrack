@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Planning Automatique</h3>
+        <a href="/students" class="btn btn-secondary btn-sm">Retour</a>
+    </div>
+
+    {# Si la liste planning contient des éléments #}
+    {% if planning %}
+        <div class="row">
+            {% for p in planning %}
+            <div class="col-md-6 mb-3">
+                <div class="card border-success shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">
+                            <i class="bi bi-check-circle"></i> {{ p.task }}
+                        </h5>
+                        <p class="card-text">
+                            <strong>Horaire :</strong> {{ p.start }}h00 — {{ p.end }}h00
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {# Cas où aucune tâche n'a pu être placée #}
+        <div class="alert alert-warning shadow-sm">
+            <h4 class="alert-heading">Aucun planning généré</h4>
+            <p>Cela peut arriver pour plusieurs raisons :</p>
+            <ul>
+                <li>Vous n'avez pas ajouté de <strong>tâches (transactions)</strong> pour cet étudiant.</li>
+                <li>L'emploi du temps est <strong>complet</strong> (pas de temps libre entre 8h et 18h).</li>
+                <li>La <strong>durée</strong> des tâches est trop longue pour les temps libres disponibles.</li>
+            </ul>
+            <hr>
+            <a href="/students" class="btn btn-warning btn-sm">Vérifier les données de l'étudiant</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

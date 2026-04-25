@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Statistiques de l'étudiant</h3>
+        <a href="/students" class="btn btn-secondary btn-sm">Retour</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white font-weight-bold">Comparaison des Moyennes</div>
+                <div class="card-body">
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white font-weight-bold">Évolution des Notes</div>
+                <div class="card-body">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Récupération des données passées par Flask
+    const s1 = {{ s1 | tojson | safe }};
+    const s2 = {{ s2 | tojson | safe }};
+    const m1 = {{ m1 }};
+    const m2 = {{ m2 }};
+    const mg = {{ mg }};
+
+    // Configuration Chart 1 : Bar Chart (Moyennes)
+    new Chart(document.getElementById('chart1'), {
+        type: 'bar',
+        data: {
+            labels: ['Semestre 1', 'Semestre 2', 'Moyenne Générale'],
+            datasets: [{
+                label: 'Notes / 20',
+                data: [m1, m2, mg],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true, max: 20 } }
+        }
+    });
+
+    // Configuration Chart 2 : Line Chart (Évolution)
+    const labelsEvolution = Array.from({length: Math.max(s1.length, s2.length)}, (_, i) => "Note " + (i + 1));
+    
+    new Chart(document.getElementById('chart2'), {
+        type: 'line',
+        data: {
+            labels: labelsEvolution,
+            datasets: [
+                {
+                    label: 'S1',
+                    data: s1,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                },
+                {
+                    label: 'S2',
+                    data: s2,
+                    borderColor: 'rgb(54, 162, 235)',
+                    tension: 0.1,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            scales: { y: { beginAtZero: true, max: 20 } }
+        }
+    });
+</script>
+{% endblock %}
